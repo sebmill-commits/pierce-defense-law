@@ -1,9 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { CheckCircle, Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import type { IntakeState } from "@/app/defense/fight-my-ticket/page";
 import { SEATTLE_SITE_CONFIG } from "@/lib/seattle-constants";
+
+// Declare gtag for TypeScript
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      action: string,
+      params?: Record<string, unknown>
+    ) => void;
+  }
+}
 
 interface ConfirmationProps {
   state: IntakeState;
@@ -11,6 +23,18 @@ interface ConfirmationProps {
 }
 
 export default function SeattleConfirmation({ state, onReset }: ConfirmationProps) {
+  // Fire Google Ads conversion on successful form submission
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "conversion", {
+        send_to: "AW-16922284676/traffic_ticket_submission",
+        value: state.price,
+        currency: "USD",
+        transaction_id: state.paymentId,
+      });
+    }
+  }, [state.price, state.paymentId]);
+
   return (
     <div className="space-y-8">
       {/* Success Header */}

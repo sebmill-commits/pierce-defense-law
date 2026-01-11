@@ -1,7 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+
+// Declare gtag for TypeScript
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      action: string,
+      params?: Record<string, unknown>
+    ) => void;
+  }
+}
 import {
   Phone,
   AlertTriangle,
@@ -118,6 +129,15 @@ export default function SeattleDUIConsultationPage() {
   const dolDeadline = getDolDeadline();
   const isUrgent = dolDeadline && dolDeadline <= new Date();
 
+  // Fire Google Ads conversion on successful form submission
+  useEffect(() => {
+    if (step === "success" && typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "conversion", {
+        send_to: "AW-16922284676/dui_consultation_submission",
+      });
+    }
+  }, [step]);
+
   if (step === "success") {
     return (
       <main className="min-h-screen bg-slate-50 px-4 py-12">
@@ -172,7 +192,7 @@ export default function SeattleDUIConsultationPage() {
                 {SEATTLE_SITE_CONFIG.phone}
               </a>
               <Link
-                href="/defense/dui-defense"
+                href="/dui-defense"
                 className="block text-sm text-slate-500 hover:text-slate-700"
               >
                 Back to DUI Defense
@@ -190,7 +210,7 @@ export default function SeattleDUIConsultationPage() {
       <div className="bg-slate-900 px-4 py-8 text-white">
         <div className="mx-auto max-w-lg">
           <Link
-            href="/defense/dui-defense"
+            href="/dui-defense"
             className="mb-4 inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" />
