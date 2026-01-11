@@ -4,7 +4,7 @@ import SeattleFooter from "@/components/seattle/layout/Footer";
 import SeattleMobileCallBar from "@/components/seattle/layout/MobileCallBar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rivercrestlaw.com/defense"),
+  metadataBase: new URL("https://defense.rivercrestlaw.com"),
   title: {
     default: "Seattle DUI & Traffic Ticket Attorney | Rivercrest Law",
     template: "%s | Rivercrest Law Seattle",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://rivercrestlaw.com/defense",
+    url: "https://defense.rivercrestlaw.com",
     siteName: "Rivercrest Law - Seattle Defense",
     title: "Seattle DUI & Traffic Ticket Defense | Rivercrest Law",
     description:

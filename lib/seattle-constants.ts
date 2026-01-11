@@ -36,7 +36,7 @@ export const SEATTLE_SITE_CONFIG = {
     facebook: "https://facebook.com/rivercrestlaw",
     linkedin: "https://linkedin.com/in/sebastianmiller",
   },
-  baseUrl: "https://rivercrestlaw.com/defense",
+  baseUrl: "https://defense.rivercrestlaw.com",
 };
 
 // Seattle/King County focus
