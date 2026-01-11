@@ -160,7 +160,7 @@ export const SEATTLE_SERVICES = [
     description:
       "DUI charges move fast. I challenge the stop, the tests, and the evidence. Early action matters.",
     icon: "Shield",
-    href: "/defense/dui-defense",
+    href: "/dui-defense",
     priceRange: "Free Consultation",
   },
   {
@@ -169,7 +169,7 @@ export const SEATTLE_SERVICES = [
     description:
       "Points add up. Insurance goes up. I fight to keep tickets off your record.",
     icon: "Gauge",
-    href: "/defense/traffic-tickets",
+    href: "/traffic-tickets",
     priceRange: "$149 - $269",
   },
   {
@@ -178,7 +178,7 @@ export const SEATTLE_SERVICES = [
     description:
       "Red light cameras. Stop signs. HOV violations. Even small tickets deserve a real defense.",
     icon: "FileWarning",
-    href: "/defense/traffic-tickets",
+    href: "/traffic-tickets",
     priceRange: "$149 - $219",
   },
   {
@@ -187,7 +187,7 @@ export const SEATTLE_SERVICES = [
     description:
       "Criminal charges require aggressive defense. I work to reduce or dismiss.",
     icon: "AlertTriangle",
-    href: "/defense/traffic-tickets",
+    href: "/traffic-tickets",
     priceRange: "Free Consultation",
   },
 ];

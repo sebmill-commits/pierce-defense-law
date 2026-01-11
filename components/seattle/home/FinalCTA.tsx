@@ -19,7 +19,7 @@ export default function SeattleFinalCTA() {
 
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
-            href="/defense/fight-my-ticket"
+            href="/fight-my-ticket"
             className="btn-primary w-full text-lg sm:w-auto"
           >
             <Camera className="h-5 w-5" />

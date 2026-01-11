@@ -10,7 +10,7 @@ export default function SeattleLocalArea() {
     name: SEATTLE_SITE_CONFIG.name,
     description:
       "Trial attorney specializing in DUI and traffic ticket defense in Seattle and King County, Washington",
-    url: "https://rivercrestlaw.com/defense",
+    url: "https://defense.rivercrestlaw.com",
     telephone: SEATTLE_SITE_CONFIG.phone,
     email: SEATTLE_SITE_CONFIG.email,
     address: {
@@ -88,7 +88,7 @@ export default function SeattleLocalArea() {
             </div>
 
             <div className="mt-8">
-              <Link href="/defense/contact" className="btn-secondary inline-flex">
+              <Link href="/contact" className="btn-secondary inline-flex">
                 Get Directions
               </Link>
             </div>

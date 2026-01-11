@@ -155,7 +155,7 @@ export default function SeattleConfirmation({ state, onReset }: ConfirmationProp
       {/* Back to Home */}
       <div className="text-center">
         <Link
-          href="/defense"
+          href="/"
           className="inline-flex items-center gap-2 font-medium text-emerald-600 hover:text-emerald-700"
         >
           Back to Home

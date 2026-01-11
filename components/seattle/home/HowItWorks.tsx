@@ -83,7 +83,7 @@ export default function SeattleHowItWorks() {
 
         {/* CTA */}
         <div className="mt-12 text-center">
-          <Link href="/defense/fight-my-ticket" className="btn-primary text-lg">
+          <Link href="/fight-my-ticket" className="btn-primary text-lg">
             Start Now - Takes 3 Minutes
           </Link>
         </div>

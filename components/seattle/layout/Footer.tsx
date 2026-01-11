@@ -4,20 +4,20 @@ import { SEATTLE_SITE_CONFIG, SEATTLE_FOOTER_CITIES } from "@/lib/seattle-consta
 
 const footerNavigation = {
   services: [
-    { name: "DUI Defense", href: "/defense/dui-defense" },
-    { name: "Speeding Tickets", href: "/defense/traffic-tickets" },
-    { name: "Red Light Camera", href: "/defense/traffic-tickets" },
-    { name: "All Traffic Violations", href: "/defense/traffic-tickets" },
+    { name: "DUI Defense", href: "/dui-defense" },
+    { name: "Speeding Tickets", href: "/traffic-tickets" },
+    { name: "Red Light Camera", href: "/traffic-tickets" },
+    { name: "All Traffic Violations", href: "/traffic-tickets" },
   ],
   company: [
-    { name: "About", href: "/defense/about" },
-    { name: "Contact", href: "/defense/contact" },
-    { name: "Results", href: "/defense/results" },
-    { name: "FAQ", href: "/defense/faq" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+    { name: "Results", href: "/results" },
+    { name: "FAQ", href: "/faq" },
   ],
   legal: [
-    { name: "Privacy Policy", href: "/defense/privacy" },
-    { name: "Terms of Service", href: "/defense/terms" },
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Terms of Service", href: "/terms" },
   ],
 };
 

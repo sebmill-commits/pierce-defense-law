@@ -45,7 +45,7 @@ export default function SeattleHero() {
             {/* CTA Buttons */}
             <div className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
               <Link
-                href="/defense/fight-my-ticket"
+                href="/fight-my-ticket"
                 className="btn-primary w-full text-lg sm:w-auto"
               >
                 <Camera className="h-5 w-5" />

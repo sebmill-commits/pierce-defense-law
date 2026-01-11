@@ -6,12 +6,12 @@ import { Phone, Menu, X } from "lucide-react";
 import { SEATTLE_SITE_CONFIG } from "@/lib/seattle-constants";
 
 const navigation = [
-  { name: "Home", href: "/defense" },
-  { name: "Fight My Ticket", href: "/defense/fight-my-ticket" },
-  { name: "DUI Defense", href: "/defense/dui-defense" },
-  { name: "Traffic Tickets", href: "/defense/traffic-tickets" },
-  { name: "About", href: "/defense/about" },
-  { name: "Contact", href: "/defense/contact" },
+  { name: "Home", href: "/" },
+  { name: "Fight My Ticket", href: "/fight-my-ticket" },
+  { name: "DUI Defense", href: "/dui-defense" },
+  { name: "Traffic Tickets", href: "/traffic-tickets" },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function SeattleHeader() {
@@ -21,7 +21,7 @@ export default function SeattleHeader() {
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
         {/* Logo */}
-        <Link href="/defense" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="flex flex-col">
             <span
               className="text-xl font-bold tracking-tight text-slate-800 sm:text-2xl"
@@ -57,7 +57,7 @@ export default function SeattleHeader() {
             <Phone className="h-4 w-4" />
             {SEATTLE_SITE_CONFIG.phone}
           </a>
-          <Link href="/defense/fight-my-ticket" className="btn-primary text-sm">
+          <Link href="/fight-my-ticket" className="btn-primary text-sm">
             Get Free Quote
           </Link>
         </div>
@@ -103,7 +103,7 @@ export default function SeattleHeader() {
               </Link>
             ))}
             <Link
-              href="/defense/fight-my-ticket"
+              href="/fight-my-ticket"
               className="btn-primary mt-4 w-full text-center"
               onClick={() => setMobileMenuOpen(false)}
             >
