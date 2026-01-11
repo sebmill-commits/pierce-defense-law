@@ -4,24 +4,29 @@ import { SEATTLE_SITE_CONFIG } from "@/lib/seattle-constants";
 
 const reasons = [
   {
+    title: "I Know How the State Thinks",
+    description:
+      "I've worked as both a public defender and for the State of Washington. I use that experience to spot weaknesses in the prosecution's case that others miss.",
+  },
+  {
+    title: "Proven Trial Record",
+    description:
+      "I've won four jury trials in a row. Prosecutors know I'm not afraid to take cases to trial when that's what it takes to win.",
+  },
+  {
+    title: "I Handle Everything",
+    description:
+      "For most traffic cases, you never step into a courtroom. I appear on your behalf and handle all the paperwork.",
+  },
+  {
     title: "Flat Fee Pricing",
     description:
       "You know exactly what you'll pay upfront. No hourly billing. No surprise invoices.",
   },
   {
-    title: "I Handle Everything",
-    description:
-      "For most traffic cases, you never step into a courtroom. I appear on your behalf.",
-  },
-  {
-    title: "Real Trial Experience",
-    description:
-      "Not just paperwork. I've tried cases in front of juries. Prosecutors know I'm ready to fight.",
-  },
-  {
     title: "Personal Attention",
     description:
-      "I take limited cases. When you call, you reach me - not a receptionist or paralegal.",
+      "I take limited cases so each client gets real attention. When you call, you reach me directly.",
   },
 ];
 
@@ -67,11 +72,12 @@ export default function SeattleWhyChooseUs() {
               className="mb-4 text-3xl font-bold text-[--primary] sm:text-4xl"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
-              Why Work With Me?
+              Don&apos;t Fight the State Alone
             </h2>
             <p className="mb-8 text-lg text-[--text-secondary]">
-              There are plenty of lawyers in Seattle. Here&apos;s what sets my
-              practice apart.
+              The system is stacked against you&mdash;prosecutor&apos;s offices,
+              law enforcement, and the full weight of the State. Get someone in
+              your corner who understands both sides and has proven they can win.
             </p>
 
             {/* Reasons List */}
