@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ArrowLeft, CreditCard, Lock, Shield, Loader2 } from "lucide-react";
-import type { IntakeState } from "@/app/fight-my-ticket/page";
+import type { IntakeState } from "@/app/(pierce)/fight-my-ticket/page";
 import { SITE_CONFIG } from "@/lib/constants";
 
 interface PaymentStepProps {

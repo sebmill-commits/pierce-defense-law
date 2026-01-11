@@ -24,8 +24,8 @@ export const SEATTLE_SITE_CONFIG = {
   attorneyName: "Sebastian Miller",
   attorneyTitle: "Trial Attorney",
   caseCount: "500+",
-  googleReviewRating: 4.9,
-  googleReviewCount: 47,
+  googleReviewRating: 5.0,
+  googleReviewCount: 23,
   hours: {
     weekday: "8:00 AM - 6:00 PM",
     weekend: "By Appointment",

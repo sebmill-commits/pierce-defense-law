@@ -2,7 +2,7 @@
 
 import { CheckCircle, Mail, Phone, FileText, Calendar } from "lucide-react";
 import Link from "next/link";
-import type { IntakeState } from "@/app/fight-my-ticket/page";
+import type { IntakeState } from "@/app/(pierce)/fight-my-ticket/page";
 import { SITE_CONFIG } from "@/lib/constants";
 
 interface ConfirmationProps {

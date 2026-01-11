@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { Camera, Upload, X, Loader2 } from "lucide-react";
 import Image from "next/image";
-import type { CitationData } from "@/app/fight-my-ticket/page";
+import type { CitationData } from "@/app/(pierce)/fight-my-ticket/page";
 
 interface CitationUploadProps {
   citation: CitationData;

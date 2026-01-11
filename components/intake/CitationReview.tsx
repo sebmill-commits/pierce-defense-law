@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { ArrowLeft, DollarSign } from "lucide-react";
-import type { CitationData } from "@/app/fight-my-ticket/page";
+import type { CitationData } from "@/app/(pierce)/fight-my-ticket/page";
 import { COURT_PRICING, calculatePrice } from "@/lib/constants";
 
 interface CitationReviewProps {

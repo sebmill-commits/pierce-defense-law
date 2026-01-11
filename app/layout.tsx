@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import MobileCallBar from "@/components/layout/MobileCallBar";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -83,10 +80,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${dmSans.variable} ${dmSerif.variable} antialiased`}>
-        <Header />
-        <main className="pb-20 lg:pb-0">{children}</main>
-        <Footer />
-        <MobileCallBar />
+        {children}
       </body>
     </html>
   );

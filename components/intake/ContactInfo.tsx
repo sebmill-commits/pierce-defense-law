@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, Lock } from "lucide-react";
-import type { ContactData } from "@/app/fight-my-ticket/page";
+import type { ContactData } from "@/app/(pierce)/fight-my-ticket/page";
 
 interface ContactInfoProps {
   contact: ContactData;
