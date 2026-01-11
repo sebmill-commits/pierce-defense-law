@@ -102,13 +102,15 @@ export default function SeattleDUIDefensePage() {
             DUI Defense in Seattle & King County
           </h1>
           <p className="mb-8 text-lg text-slate-300 lg:text-xl">
-            A DUI arrest doesn&apos;t mean a conviction. I challenge the stop,
-            the tests, and the evidence. Every detail matters when your license
-            and freedom are on the line.
+            A DUI arrest brings the full weight of the State against
+            you&mdash;prosecutors, law enforcement, and a system designed to
+            convict. I&apos;ve worked on both sides of that system, and I use
+            that experience to fight back. Every detail matters when your
+            license and freedom are on the line.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row">
             <Link
-              href="/defense/dui-defense/consultation"
+              href="/dui-defense/consultation"
               className="btn-primary inline-flex items-center justify-center gap-2 text-lg"
             >
               Free Consultation
@@ -155,8 +157,37 @@ export default function SeattleDUIDefensePage() {
         </div>
       </section>
 
-      {/* Defense Strategies */}
+      {/* Why Me Section */}
       <section className="px-4 py-12 lg:py-16">
+        <div className="mx-auto max-w-4xl">
+          <h2
+            className="mb-6 text-2xl font-bold text-slate-900 lg:text-3xl"
+            style={{ fontFamily: "var(--font-dm-serif)" }}
+          >
+            Experience on Both Sides
+          </h2>
+          <div className="rounded-xl border border-slate-200 bg-white p-6 lg:p-8">
+            <p className="mb-4 text-slate-600">
+              I started my career as a public defender, trying DUI cases
+              regularly. I developed a reputation for taking cases to trial when
+              necessary&mdash;including winning four jury trials in a row.
+            </p>
+            <p className="mb-4 text-slate-600">
+              Later, I worked for the State of Washington prosecuting civil
+              cases. I learned how the government builds cases, what evidence
+              they prioritize, and where their strategies have holes.
+            </p>
+            <p className="text-slate-600">
+              Now I use that dual perspective to defend people facing DUI
+              charges. I understand the resource imbalance you&apos;re up
+              against&mdash;and I know how to level the playing field.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Defense Strategies */}
+      <section className="bg-slate-50 px-4 py-12 lg:py-16">
         <div className="mx-auto max-w-4xl">
           <h2
             className="mb-6 text-2xl font-bold text-slate-900 lg:text-3xl"
@@ -165,7 +196,10 @@ export default function SeattleDUIDefensePage() {
             How I Fight DUI Charges
           </h2>
           <p className="mb-8 text-slate-600">
-            Every DUI case has potential weaknesses. I look for them.
+            As a former public defender, I tried DUI cases regularly and learned
+            where the State&apos;s cases fall apart. Every DUI has potential
+            weaknesses&mdash;I know where to look because I&apos;ve seen how
+            prosecutors build these cases from the inside.
           </p>
           <div className="grid gap-6 sm:grid-cols-2">
             {defenseStrategies.map((strategy, index) => (
@@ -232,15 +266,17 @@ export default function SeattleDUIDefensePage() {
               className="mb-4 text-2xl font-bold lg:text-3xl"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
-              Free DUI Consultation
+              Don&apos;t Face the State Alone
             </h2>
             <p className="mx-auto mb-8 max-w-xl text-slate-300">
-              Every DUI case is different. Call me to discuss your situation.
-              I&apos;ll explain your options and what I can do to help.
+              The prosecution has resources, experience, and the system on their
+              side. You need someone who understands how they operate and has
+              proven they can win against steep odds. I&apos;ve won four jury
+              trials in a row&mdash;let me fight for you.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
-                href="/defense/dui-defense/consultation"
+                href="/dui-defense/consultation"
                 className="btn-primary inline-flex items-center gap-2 text-lg"
               >
                 Request Free Consultation
