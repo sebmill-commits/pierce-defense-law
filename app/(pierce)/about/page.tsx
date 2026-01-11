@@ -103,25 +103,28 @@ export default function AboutPage() {
                   className="text-2xl font-bold text-slate-900"
                   style={{ fontFamily: "var(--font-dm-serif)" }}
                 >
-                  Trial-Tested Defense
+                  From Both Sides of the Courtroom
                 </h2>
                 <p className="text-lg text-slate-600">
-                  I&apos;m {SITE_CONFIG.attorneyName}, and I run a focused
-                  defense practice in Pierce County. I don&apos;t take every
-                  case that comes through the door. I take a limited number so
-                  each client gets real attention.
+                  I started my legal career as a public defender, trying cases
+                  ranging from DUIs to property crimes. I developed a reputation
+                  for taking cases to trial when necessary&mdash;including once
+                  winning four jury trials in a row. When you&apos;ve stood in
+                  front of a jury that many times, you learn what works and what
+                  doesn&apos;t.
                 </p>
                 <p className="text-slate-600">
-                  Most traffic ticket lawyers never see the inside of a
-                  courtroom. They negotiate deals and move on. That&apos;s fine
-                  for some cases, but when negotiation doesn&apos;t work, you
-                  need someone who&apos;s ready to fight.
+                  Later, I worked for the State of Washington, prosecuting civil
+                  cases against predatory businesses. I saw firsthand how the
+                  State builds cases, what evidence they prioritize, and where
+                  their strategies have weaknesses.
                 </p>
                 <p className="text-slate-600">
-                  I&apos;ve tried cases. I know what it takes to challenge
-                  evidence, cross-examine officers, and argue to a judge or
-                  jury. That experience shapes how I approach every case, even
-                  the ones that settle.
+                  Now, I use this diverse experience to advocate aggressively
+                  for my clients. I understand how prosecutors think because
+                  I&apos;ve been on that side. I know what it takes to win at
+                  trial because I&apos;ve done it repeatedly. That perspective
+                  shapes every case I take&mdash;even the ones that settle.
                 </p>
               </div>
 
@@ -203,9 +206,18 @@ export default function AboutPage() {
                     freedom.
                   </p>
                   <p className="text-slate-600">
-                    I chose this practice area because I can make a real
-                    difference. Every case I take is one where I can help
-                    someone avoid consequences that could follow them for years.
+                    The system isn&apos;t built for fairness. Prosecutor&apos;s
+                    offices, law enforcement agencies, and the full weight of
+                    the State apparatus come down hard on individuals&mdash;even
+                    for routine traffic matters. Most people don&apos;t realize
+                    how much is stacked against them.
+                  </p>
+                  <p className="text-slate-600">
+                    I chose this practice area because I can level that playing
+                    field. My experience on both sides lets me identify
+                    weaknesses in the State&apos;s case that others might miss.
+                    Don&apos;t face the system alone&mdash;get someone in your
+                    corner who has proven they can win against steep odds.
                   </p>
                 </div>
               </div>

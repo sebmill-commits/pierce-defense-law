@@ -159,14 +159,21 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map Placeholder */}
+      {/* Google Map */}
       <section className="px-4 pb-12 lg:pb-16">
         <div className="mx-auto max-w-4xl">
-          <div className="flex h-64 items-center justify-center rounded-xl bg-slate-200 lg:h-80">
-            <div className="text-center text-slate-500">
-              <MapPin className="mx-auto mb-2 h-8 w-8" />
-              <p className="text-sm">Map coming soon</p>
-            </div>
+          <div className="overflow-hidden rounded-xl">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2708.9387!2d-122.5153!3d47.2087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5491a1c4e4e4e4e4%3A0x0!2s9009%20S%2019th%20St%2C%20Tacoma%2C%20WA%2098466!5e0!3m2!1sen!2sus!4v1705000000000!5m2!1sen!2sus"
+              width="100%"
+              height="320"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Pierce Defense Law Office Location - 9009 S 19th St, Tacoma, WA"
+              className="h-64 w-full lg:h-80"
+            />
           </div>
           <p className="mt-4 text-center text-sm text-slate-500">
             Serving Pierce County, South King County, and Thurston County

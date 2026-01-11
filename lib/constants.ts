@@ -32,26 +32,26 @@ export const SITE_CONFIG = {
 };
 
 // Brand voice: clear, calm, confident, direct
-// Three pillars: Affordable, Aggressive, Trial-tested
+// Theme: Fighting the State - experience on both sides
 export const BRAND = {
   pillars: [
     {
-      title: "Affordable Defense",
-      description: "Simple pricing. No confusion. Flat fees for most traffic matters.",
+      title: "Public Defender Experience",
+      description: "I started as a public defender, trying DUIs to property crimes. I know how to fight for people against the system.",
     },
     {
-      title: "Aggressive Approach",
-      description: "I challenge stops, evidence, and procedures. Every detail matters.",
+      title: "Proven Trial Record",
+      description: "I've won four jury trials in a row. Prosecutors know I'm not afraid to take cases all the way.",
     },
     {
-      title: "Ready for Court",
-      description: "Real courtroom experience. Jury trials. Prepared to fight if needed.",
+      title: "Knows the System",
+      description: "I've worked for the State of Washington. I understand how they build cases and where they have weaknesses.",
     },
   ],
   taglines: [
-    "Straight talk. Fast action. Trial-tested defense when it matters.",
-    "I take a limited number of cases so clients get real attention.",
-    "Affordable. Aggressive. Trial-ready.",
+    "Don't face the State alone. Get someone who knows how to fight back.",
+    "I've worked on both sides of the system. Now I use that experience to fight for you.",
+    "Former public defender. Four jury trial wins in a row.",
   ],
 };
 

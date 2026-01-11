@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Camera, Phone, Clock } from "lucide-react";
-import { SITE_CONFIG, BRAND } from "@/lib/constants";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export default function Hero() {
   return (
@@ -24,22 +24,29 @@ export default function Hero() {
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
               DUI or Traffic Ticket?
-              <span className="block text-[--success]">I&apos;ll Fight It.</span>
+              <span className="block text-[--success]">Don&apos;t Face the State Alone.</span>
             </h1>
 
             {/* Subheadline */}
             <p className="mb-6 text-lg text-gray-300 sm:text-xl">
-              {SITE_CONFIG.tagline}
+              Former public defender. Four jury trial wins in a row. I&apos;ve worked
+              on both sides of the system&mdash;now I use that experience to fight for you.
             </p>
 
             {/* Three Pillars - Quick hits */}
             <div className="mb-8 flex flex-wrap justify-center gap-4 text-sm text-gray-300 lg:justify-start">
-              {BRAND.pillars.map((pillar, i) => (
-                <span key={i} className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[--success]" />
-                  {pillar.title}
-                </span>
-              ))}
+              <span className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[--success]" />
+                Public Defender Experience
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[--success]" />
+                Proven Trial Record
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[--success]" />
+                Knows the System
+              </span>
             </div>
 
             {/* CTA Buttons */}
@@ -62,9 +69,8 @@ export default function Hero() {
 
             {/* Urgency Note */}
             <p className="mt-6 text-sm text-gray-400">
-              I take a limited number of cases to keep service fast and personal.
-              <br className="hidden sm:block" />
-              {" "}If I&apos;m full, I&apos;ll tell you right away.
+              The system is stacked against you. Get someone who&apos;s been on both
+              sides and knows how to win.
             </p>
           </div>
 

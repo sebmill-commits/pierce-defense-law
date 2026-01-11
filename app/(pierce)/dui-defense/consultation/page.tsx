@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Phone,
@@ -11,6 +11,17 @@ import {
   Loader2,
 } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
+
+// Declare gtag for TypeScript
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      action: string,
+      params?: Record<string, unknown>
+    ) => void;
+  }
+}
 
 type FormStep = "form" | "submitting" | "success";
 
@@ -116,6 +127,15 @@ export default function DUIConsultationPage() {
 
   const dolDeadline = getDolDeadline();
   const isUrgent = dolDeadline && dolDeadline <= new Date();
+
+  // Fire Google Ads conversion on successful form submission
+  useEffect(() => {
+    if (step === "success" && typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "conversion", {
+        send_to: "AW-16922284676/dui_consultation_submission",
+      });
+    }
+  }, [step]);
 
   if (step === "success") {
     return (

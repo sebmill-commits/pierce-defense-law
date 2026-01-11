@@ -1,39 +1,32 @@
-import { DollarSign, Sword, Scale, Clock, UserCheck, FileCheck } from "lucide-react";
-import { BRAND } from "@/lib/constants";
+import Image from "next/image";
+import { CheckCircle2, Star } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/constants";
 
-const pillarsWithIcons = [
+const reasons = [
   {
-    ...BRAND.pillars[0],
-    icon: DollarSign,
-    details: "Flat-fee options for most traffic matters. Straightforward pricing for DUIs. No hourly billing confusion.",
+    title: "I Know How the State Thinks",
+    description:
+      "I've worked as both a public defender and for the State of Washington. I use that experience to spot weaknesses in the prosecution's case that others miss.",
   },
   {
-    ...BRAND.pillars[1],
-    icon: Sword,
-    details: "I look for weaknesses: bad stops, faulty equipment, procedural errors. Every case gets scrutinized.",
+    title: "Proven Trial Record",
+    description:
+      "I've won four jury trials in a row. Prosecutors know I'm not afraid to take cases to trial when that's what it takes to win.",
   },
   {
-    ...BRAND.pillars[2],
-    icon: Scale,
-    details: "Real courtroom experience matters. I've tried cases to juries and know how to prepare for trial.",
-  },
-];
-
-const additionalReasons = [
-  {
-    icon: Clock,
-    title: "Fast Action",
-    description: "Deadlines move fast. I respond quickly and keep your case moving.",
-  },
-  {
-    icon: UserCheck,
-    title: "Personal Attention",
-    description: "I take a limited number of cases. You won't be a file on a pile.",
-  },
-  {
-    icon: FileCheck,
     title: "I Handle Everything",
-    description: "Court appearances, paperwork, negotiations. You don't have to take time off work.",
+    description:
+      "For most traffic cases, you never step into a courtroom. I appear on your behalf and handle all the paperwork.",
+  },
+  {
+    title: "Flat Fee Pricing",
+    description:
+      "You know exactly what you'll pay upfront. No hourly billing. No surprise invoices.",
+  },
+  {
+    title: "Personal Attention",
+    description:
+      "I take limited cases so each client gets real attention. When you call, you reach me directly.",
   },
 ];
 
@@ -41,53 +34,71 @@ export default function WhyChooseUs() {
   return (
     <section className="bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        {/* Section Header */}
-        <div className="mx-auto mb-12 max-w-2xl text-center lg:mb-16">
-          <h2
-            className="mb-4 text-3xl font-bold text-[--primary] sm:text-4xl"
-            style={{ fontFamily: "var(--font-dm-serif)" }}
-          >
-            Why Hire Me
-          </h2>
-          <p className="text-lg text-[--text-secondary]">
-            I believe people deserve strong defense without confusion or games.
-            Here&apos;s what I bring to your case.
-          </p>
-        </div>
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Image Column */}
+          <div className="relative">
+            <div className="relative overflow-hidden rounded-2xl">
+              <Image
+                src="/images/Courthouse Steps Shot.jpg"
+                alt="Sebastian Miller outside Pierce County Courthouse"
+                width={600}
+                height={450}
+                className="h-auto w-full object-cover"
+              />
+            </div>
+            {/* Google Reviews Badge */}
+            <div className="absolute -bottom-6 -right-6 rounded-xl bg-white p-4 shadow-xl lg:-right-8">
+              <div className="flex items-center gap-1 text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="h-4 w-4 fill-current"
+                    aria-hidden="true"
+                  />
+                ))}
+              </div>
+              <p className="mt-1 text-lg font-bold text-[--primary]">
+                {SITE_CONFIG.googleReviewRating}
+              </p>
+              <p className="text-xs text-[--text-secondary]">
+                {SITE_CONFIG.googleReviewCount} Google Reviews
+              </p>
+            </div>
+          </div>
 
-        {/* Three Pillars - Featured */}
-        <div className="mb-16 grid gap-8 lg:grid-cols-3">
-          {pillarsWithIcons.map((pillar) => (
-            <div
-              key={pillar.title}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[--primary] to-[--primary-dark] p-8 text-white"
+          {/* Content Column */}
+          <div>
+            <h2
+              className="mb-4 text-3xl font-bold text-[--primary] sm:text-4xl"
+              style={{ fontFamily: "var(--font-dm-serif)" }}
             >
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-white/10">
-                <pillar.icon className="h-7 w-7" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold">{pillar.title}</h3>
-              <p className="text-gray-300">{pillar.details}</p>
-            </div>
-          ))}
-        </div>
+              Don&apos;t Fight the State Alone
+            </h2>
+            <p className="mb-8 text-lg text-[--text-secondary]">
+              The system is stacked against you&mdash;prosecutor&apos;s offices,
+              law enforcement, and the full weight of the State. Get someone in
+              your corner who understands both sides and has proven they can win.
+            </p>
 
-        {/* Additional Reasons */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {additionalReasons.map((reason) => (
-            <div key={reason.title} className="flex gap-4">
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-[--success]/10 text-[--success]">
-                <reason.icon className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="mb-2 font-bold text-[--primary]">
-                  {reason.title}
-                </h3>
-                <p className="text-sm text-[--text-secondary]">
-                  {reason.description}
-                </p>
-              </div>
+            {/* Reasons List */}
+            <div className="space-y-6">
+              {reasons.map((reason, index) => (
+                <div key={index} className="flex gap-4">
+                  <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[--success]/10">
+                    <CheckCircle2 className="h-4 w-4 text-[--success]" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-[--primary]">
+                      {reason.title}
+                    </h3>
+                    <p className="text-sm text-[--text-secondary]">
+                      {reason.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
