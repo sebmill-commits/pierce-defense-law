@@ -97,13 +97,14 @@ export default function SeattleTrafficTicketsPage() {
             Traffic Ticket Defense
           </h1>
           <p className="mb-8 text-lg text-slate-300 lg:text-xl">
-            Points add up. Insurance goes up. I fight to keep tickets off your
-            record. Flat fees. No surprises. I handle court so you don&apos;t
-            miss work.
+            Even a simple traffic ticket puts you against the system&mdash;prosecutors,
+            courts, and procedures designed to process convictions quickly. I&apos;ve
+            worked on both sides of that system and know how to fight back. Flat
+            fees. No surprises. I handle court so you don&apos;t miss work.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row">
             <Link
-              href="/defense/fight-my-ticket"
+              href="/fight-my-ticket"
               className="btn-primary inline-flex items-center justify-center gap-2 text-lg"
             >
               Fight My Ticket
@@ -151,6 +152,36 @@ export default function SeattleTrafficTicketsPage() {
         </div>
       </section>
 
+      {/* Why Me Section */}
+      <section className="bg-white px-4 py-12 lg:py-16">
+        <div className="mx-auto max-w-4xl">
+          <h2
+            className="mb-6 text-2xl font-bold text-slate-900 lg:text-3xl"
+            style={{ fontFamily: "var(--font-dm-serif)" }}
+          >
+            Someone Who Knows the System
+          </h2>
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 lg:p-8">
+            <p className="mb-4 text-slate-600">
+              I started my career as a public defender, handling everything from
+              traffic cases to serious criminal matters. I tried cases
+              regularly&mdash;including winning four jury trials in a row. I
+              learned that preparation and willingness to fight changes how
+              prosecutors approach your case.
+            </p>
+            <p className="mb-4 text-slate-600">
+              I also worked for the State of Washington, which gave me insight
+              into how government cases are built and where they have weaknesses.
+            </p>
+            <p className="text-slate-600">
+              Now I use that experience to defend people against traffic charges.
+              Most attorneys just process paperwork. I actually know what it
+              takes to win when the system is stacked against you.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Why Fight */}
       <section className="bg-slate-100 px-4 py-12 lg:py-16">
         <div className="mx-auto max-w-4xl">
@@ -161,8 +192,10 @@ export default function SeattleTrafficTicketsPage() {
             Why Fight Your Ticket?
           </h2>
           <p className="mb-8 text-slate-600">
-            Paying a ticket is pleading guilty. That creates consequences beyond
-            the fine itself.
+            The system makes it easy to just pay and move on. That&apos;s by
+            design&mdash;it&apos;s how courts process thousands of tickets
+            efficiently. But paying is pleading guilty, and that creates
+            consequences beyond the fine itself.
           </p>
           <div className="grid gap-6 sm:grid-cols-2">
             {whyFight.map((reason, index) => (
@@ -222,7 +255,7 @@ export default function SeattleTrafficTicketsPage() {
           <p className="mt-4 text-center text-sm text-slate-500">
             Final price depends on violation type.{" "}
             <Link
-              href="/defense/fight-my-ticket"
+              href="/fight-my-ticket"
               className="font-medium text-emerald-600 hover:underline"
             >
               Get an instant quote
@@ -295,14 +328,15 @@ export default function SeattleTrafficTicketsPage() {
               className="mb-4 text-2xl font-bold lg:text-3xl"
               style={{ fontFamily: "var(--font-dm-serif)" }}
             >
-              Ready to Fight Your Ticket?
+              Don&apos;t Let the System Win
             </h2>
             <p className="mx-auto mb-8 max-w-xl text-slate-300">
-              Takes 3 minutes. Snap a photo of your ticket, get a quote, and
-              let me handle the rest.
+              The process is designed for quick guilty pleas, not fairness. Get
+              someone in your corner who knows how to push back. I&apos;ve won
+              against steep odds before&mdash;let me fight for you.
             </p>
             <Link
-              href="/defense/fight-my-ticket"
+              href="/fight-my-ticket"
               className="btn-primary inline-flex items-center gap-2 text-lg"
             >
               Start Now
