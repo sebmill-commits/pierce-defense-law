@@ -20,12 +20,10 @@ export const SEATTLE_SITE_CONFIG = {
     state: "WA",
     zip: "98104-2246",
   },
-  wsbaNumber: "XXXXX", // TODO: Replace with actual WSBA number
+  wsbaNumber: "50261",
   attorneyName: "Sebastian Miller",
   attorneyTitle: "Trial Attorney",
   caseCount: "500+",
-  googleReviewRating: 5.0,
-  googleReviewCount: 23,
   hours: {
     weekday: "8:00 AM - 6:00 PM",
     weekend: "By Appointment",

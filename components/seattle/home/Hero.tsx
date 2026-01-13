@@ -29,7 +29,7 @@ export default function SeattleHero() {
 
             {/* Subheadline */}
             <p className="mb-6 text-lg text-gray-300 sm:text-xl">
-              Former public defender. Four jury trial wins in a row. I&apos;ve worked
+              Former public defender with acquittals on several jury trials. I&apos;ve worked
               on both sides of the system&mdash;now I use that experience to fight for you.
             </p>
 

@@ -13,12 +13,10 @@ export const SITE_CONFIG = {
     state: "WA",
     zip: "98466",
   },
-  wsbaNumber: "XXXXX", // TODO: Replace with actual WSBA number
+  wsbaNumber: "50261",
   attorneyName: "Sebastian Miller",
   attorneyTitle: "Trial Attorney",
   caseCount: "500+",
-  googleReviewRating: 4.9,
-  googleReviewCount: 47,
   hours: {
     weekday: "8:00 AM - 6:00 PM",
     weekend: "By Appointment",
@@ -41,7 +39,7 @@ export const BRAND = {
     },
     {
       title: "Proven Trial Record",
-      description: "I've won four jury trials in a row. Prosecutors know I'm not afraid to take cases all the way.",
+      description: "I have acquittals on several jury trials. Prosecutors know I'm not afraid to take cases all the way.",
     },
     {
       title: "Knows the System",
@@ -51,7 +49,7 @@ export const BRAND = {
   taglines: [
     "Don't face the State alone. Get someone who knows how to fight back.",
     "I've worked on both sides of the system. Now I use that experience to fight for you.",
-    "Former public defender. Four jury trial wins in a row.",
+    "Former public defender with acquittals on several jury trials.",
   ],
 };
 

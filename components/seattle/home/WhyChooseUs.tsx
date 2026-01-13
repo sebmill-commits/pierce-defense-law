@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { CheckCircle2, Star } from "lucide-react";
-import { SEATTLE_SITE_CONFIG } from "@/lib/seattle-constants";
+import { CheckCircle2 } from "lucide-react";
 
 const reasons = [
   {
@@ -11,7 +10,7 @@ const reasons = [
   {
     title: "Proven Trial Record",
     description:
-      "I've won four jury trials in a row. Prosecutors know I'm not afraid to take cases to trial when that's what it takes to win.",
+      "I have acquittals on several jury trials. Prosecutors know I'm not afraid to take cases to trial when that's what it takes to win.",
   },
   {
     title: "I Handle Everything",
@@ -45,24 +44,6 @@ export default function SeattleWhyChooseUs() {
                 height={450}
                 className="h-auto w-full object-cover"
               />
-            </div>
-            {/* Google Reviews Badge */}
-            <div className="absolute -bottom-6 -right-6 rounded-xl bg-white p-4 shadow-xl lg:-right-8">
-              <div className="flex items-center gap-1 text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="h-4 w-4 fill-current"
-                    aria-hidden="true"
-                  />
-                ))}
-              </div>
-              <p className="mt-1 text-lg font-bold text-[--primary]">
-                {SEATTLE_SITE_CONFIG.googleReviewRating}
-              </p>
-              <p className="text-xs text-[--text-secondary]">
-                {SEATTLE_SITE_CONFIG.googleReviewCount} Google Reviews
-              </p>
             </div>
           </div>
 
