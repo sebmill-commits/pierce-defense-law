@@ -26,39 +26,28 @@ export default function PaymentStep({
     setError(null);
 
     try {
-      // In production, this would create a Stripe checkout session
-      // For now, simulate the payment process
       const response = await fetch("/api/stripe/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          source: "PIERCE_DEFENSE_WEBSITE",
           price: state.price,
           citation: state.citation,
           contact: state.contact,
         }),
       });
 
-      if (!response.ok) {
-        // If API not set up yet, simulate success for demo
-        if (response.status === 404) {
-          // Simulate payment success
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          const mockPaymentId = `demo_${Date.now()}`;
-          setPaymentId(mockPaymentId);
-          onSuccess();
-          return;
-        }
-        throw new Error("Payment failed. Please try again.");
-      }
-
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Payment failed. Please try again.");
+      }
 
       if (data.url) {
         // Redirect to Stripe Checkout
         window.location.href = data.url;
-      } else if (data.paymentId) {
-        setPaymentId(data.paymentId);
-        onSuccess();
+      } else {
+        throw new Error("Unable to create checkout session. Please try again.");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Payment failed");

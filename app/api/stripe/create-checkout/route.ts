@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// This will be used when Stripe is configured
-// import Stripe from 'stripe';
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+import Stripe from "stripe";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { price, citation, contact } = body;
+    const { price, citation, contact, source } = body;
 
     // Validate required fields
     if (!price || !contact?.email || !contact?.firstName) {
@@ -19,54 +16,53 @@ export async function POST(request: NextRequest) {
 
     // Check if Stripe is configured
     if (!process.env.STRIPE_SECRET_KEY) {
-      // Return demo mode response
-      return NextResponse.json({
-        paymentId: `demo_${Date.now()}`,
-        mode: "demo",
-        message: "Stripe not configured. Running in demo mode.",
-      });
+      console.error("STRIPE_SECRET_KEY not configured");
+      return NextResponse.json(
+        { error: "Payment system not configured. Please contact us directly." },
+        { status: 500 }
+      );
     }
 
-    // Production Stripe integration would go here:
-    /*
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+    // Determine the base URL and success/cancel paths based on source
+    const isSeattleSite = source === "SEATTLE_DEFENSE_WEBSITE";
+    const basePath = isSeattleSite ? "/defense/fight-my-ticket" : "/fight-my-ticket";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://piercedefenselaw.com";
+
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: "usd",
             product_data: {
-              name: 'Traffic Ticket Defense',
-              description: `${citation.courtName} - ${citation.violationType || 'Traffic Infraction'}`,
+              name: "Traffic Ticket Defense",
+              description: `${citation.courtName} - ${citation.violationType || "Traffic Infraction"}`,
             },
-            unit_amount: price * 100, // Stripe uses cents
+            unit_amount: Math.round(price * 100), // Stripe uses cents
           },
           quantity: 1,
         },
       ],
-      mode: 'payment',
+      mode: "payment",
       customer_email: contact.email,
       metadata: {
+        source: source || "PIERCE_DEFENSE_WEBSITE",
         firstName: contact.firstName,
         lastName: contact.lastName,
-        phone: contact.phone,
+        phone: contact.phone || "",
         courtName: citation.courtName,
-        citationNumber: citation.citationNumber || '',
-        violationType: citation.violationType || '',
-        hearingDate: citation.hearingDate || '',
+        citationNumber: citation.citationNumber || "",
+        citationDate: citation.citationDate || "",
+        violationType: citation.violationType || "",
+        hearingDate: citation.hearingDate || "",
       },
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/fight-my-ticket?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/fight-my-ticket?canceled=true`,
+      success_url: `${baseUrl}${basePath}?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}${basePath}?canceled=true`,
     });
 
     return NextResponse.json({ url: session.url });
-    */
-
-    // For now, return demo response
-    return NextResponse.json({
-      paymentId: `demo_${Date.now()}`,
-      mode: "demo",
-    });
   } catch (error) {
     console.error("Stripe checkout error:", error);
     return NextResponse.json(

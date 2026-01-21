@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import SeattleCitationUpload from "@/components/seattle/intake/CitationUpload";
 import SeattleCitationReview from "@/components/seattle/intake/CitationReview";
@@ -75,11 +76,69 @@ const stepNumbers: Record<IntakeStep, number> = {
   confirmation: 5,
 };
 
-export default function SeattleFightMyTicketPage() {
+function SeattleFightMyTicketContent() {
   const [state, setState] = useState<IntakeState>(initialState);
+  const searchParams = useSearchParams();
+
+  // Handle return from Stripe checkout
+  useEffect(() => {
+    const success = searchParams.get("success");
+    const sessionId = searchParams.get("session_id");
+    const canceled = searchParams.get("canceled");
+
+    if (success === "true" && sessionId) {
+      // User completed Stripe payment - show confirmation
+      const saved = localStorage.getItem("seattleIntakeState");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setState({
+            ...initialState,
+            ...parsed,
+            citation: { ...initialState.citation, ...parsed.citation, imageFile: null },
+            step: "confirmation",
+            paymentId: sessionId,
+          });
+          // Clear the URL params without reload
+          window.history.replaceState({}, "", window.location.pathname);
+        } catch {
+          setState((prev) => ({ ...prev, step: "confirmation", paymentId: sessionId }));
+        }
+      } else {
+        setState((prev) => ({ ...prev, step: "confirmation", paymentId: sessionId }));
+      }
+      // Clear localStorage after successful payment
+      localStorage.removeItem("seattleIntakeState");
+      return;
+    }
+
+    if (canceled === "true") {
+      // User canceled - restore their form state and show payment step
+      const saved = localStorage.getItem("seattleIntakeState");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setState({
+            ...initialState,
+            ...parsed,
+            citation: { ...initialState.citation, ...parsed.citation, imageFile: null },
+            step: "payment",
+          });
+        } catch {
+          // Ignore parse errors
+        }
+      }
+      // Clear the URL params
+      window.history.replaceState({}, "", window.location.pathname);
+      return;
+    }
+  }, [searchParams]);
 
   // Persist state to localStorage (use different key for Seattle)
   useEffect(() => {
+    // Skip if we just handled Stripe return
+    if (searchParams.get("success") || searchParams.get("canceled")) return;
+
     const saved = localStorage.getItem("seattleIntakeState");
     if (saved) {
       try {
@@ -92,11 +151,11 @@ export default function SeattleFightMyTicketPage() {
             citation: { ...prev.citation, ...parsed.citation, imageFile: null },
           }));
         }
-      } catch (e) {
+      } catch {
         // Ignore parse errors
       }
     }
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     if (state.step !== "confirmation") {
@@ -226,5 +285,21 @@ export default function SeattleFightMyTicketPage() {
         )}
       </div>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+    </div>
+  );
+}
+
+export default function SeattleFightMyTicketPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <SeattleFightMyTicketContent />
+    </Suspense>
   );
 }
