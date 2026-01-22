@@ -27,8 +27,10 @@ export async function POST(request: NextRequest) {
 
     // Determine the base URL and success/cancel paths based on source
     const isSeattleSite = source === "SEATTLE_DEFENSE_WEBSITE";
-    const basePath = isSeattleSite ? "/defense/fight-my-ticket" : "/fight-my-ticket";
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://piercedefenselaw.com";
+    const basePath = "/fight-my-ticket";
+    const baseUrl = isSeattleSite
+      ? (process.env.SEATTLE_BASE_URL || "https://defense.rivercrestlaw.com")
+      : (process.env.NEXT_PUBLIC_BASE_URL || "https://piercedefense.com");
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
