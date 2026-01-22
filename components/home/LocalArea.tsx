@@ -109,7 +109,7 @@ export default function LocalArea() {
           <div className="relative overflow-hidden rounded-2xl bg-gray-200">
             <div className="aspect-square w-full lg:aspect-auto lg:h-full lg:min-h-[400px]">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2708.9387!2d-122.5153!3d47.2087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5491a1c4e4e4e4e4%3A0x0!2s9009%20S%2019th%20St%2C%20Tacoma%2C%20WA%2098466!5e0!3m2!1sen!2sus!4v1705000000000!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d45000!2d-122.4843!3d47.2287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5491a1c4e4e4e4e4%3A0x0!2s9009%20S%2019th%20St%2C%20Tacoma%2C%20WA%2098466!5e0!3m2!1sen!2sus!4v1705000000000!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
                 style={{ border: 0, minHeight: "400px" }}

@@ -12,6 +12,21 @@ interface PaymentStepProps {
   onSuccess: () => void;
 }
 
+// Convert file to base64
+async function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const result = reader.result as string;
+      // Remove the data:image/...;base64, prefix
+      const base64 = result.split(",")[1];
+      resolve(base64);
+    };
+    reader.onerror = (error) => reject(error);
+  });
+}
+
 export default function SeattlePaymentStep({
   state,
   setPaymentId,
@@ -19,13 +34,47 @@ export default function SeattlePaymentStep({
   onSuccess,
 }: PaymentStepProps) {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handlePayment = async () => {
     setIsProcessing(true);
     setError(null);
+    setStatusMessage(null);
 
     try {
+      // Step 1: Upload citation image to Google Drive (if available)
+      if (state.citation.imageFile) {
+        setStatusMessage("Uploading citation...");
+        try {
+          const imageData = await fileToBase64(state.citation.imageFile);
+          const clientName = `${state.contact.firstName} ${state.contact.lastName}`;
+          const fileName = `${clientName.replace(/\s+/g, "_")}_${state.citation.courtName?.replace(/\s+/g, "_") || "citation"}_${Date.now()}.jpg`;
+
+          const uploadResponse = await fetch("/api/upload-citation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              imageData,
+              fileName,
+              clientName,
+              courtName: state.citation.courtName,
+              citationNumber: state.citation.citationNumber,
+            }),
+          });
+
+          if (!uploadResponse.ok) {
+            console.error("Citation upload failed, continuing with payment");
+            // Don't block payment if upload fails - we can get the citation later
+          }
+        } catch (uploadError) {
+          console.error("Citation upload error:", uploadError);
+          // Don't block payment if upload fails
+        }
+      }
+
+      // Step 2: Create Stripe checkout session
+      setStatusMessage("Creating checkout...");
       const response = await fetch("/api/stripe/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,6 +101,7 @@ export default function SeattlePaymentStep({
     } catch (err) {
       setError(err instanceof Error ? err.message : "Payment failed");
       setIsProcessing(false);
+      setStatusMessage(null);
     }
   };
 
@@ -146,7 +196,7 @@ export default function SeattlePaymentStep({
         {isProcessing ? (
           <>
             <Loader2 className="h-5 w-5 animate-spin" />
-            Processing...
+            {statusMessage || "Processing..."}
           </>
         ) : (
           <>
