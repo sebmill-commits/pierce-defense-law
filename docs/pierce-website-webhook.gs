@@ -179,19 +179,10 @@ function pierceJson_(obj) {
 }
 
 // ============================================================================
-// RUN THESE TWO FROM THE EDITOR BEFORE DEPLOYING
+// RUN THIS FROM THE EDITOR BEFORE DEPLOYING
 // ============================================================================
 
-/**
- * STEP 1 - run this FIRST, before pasting anything else.
- * Logs whether this project already has a doPost defined elsewhere.
- * "undefined" means it's safe to add this file.
- */
-function pierceCheckForExistingDoPost() {
-  console.log('Existing doPost in this project: ' + typeof doPost);
-}
-
-/** STEP 2 - authorizes the script and proves both paths work end to end. */
+/** Authorizes the script and proves both paths work end to end. */
 function pierceTestWebhook() {
   const intake = doPost({
     postData: {
