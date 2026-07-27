@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { webhookSecret } from "@/lib/rivercrest";
 
 // Upload citation image to Google Drive via Apps Script
 export async function POST(request: NextRequest) {
@@ -29,6 +30,7 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        secret: webhookSecret(),
         imageData, // base64 encoded image
         fileName: fileName || `citation_${Date.now()}.jpg`,
         clientName: clientName || "Unknown",

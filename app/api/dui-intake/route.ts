@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { submitToRivercrest } from "@/lib/rivercrest";
 
 // DUI Intake submission endpoint
 // Sends data to Rivercrest DUI spreadsheet via Google Apps Script webhook
@@ -54,34 +55,14 @@ export async function POST(request: NextRequest) {
 
     console.log("New DUI intake submission:", intakeData);
 
-    // Send to Rivercrest Google Apps Script webhook
-    const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_WEBHOOK_URL;
-
-    if (GOOGLE_SCRIPT_URL) {
-      try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(intakeData),
-        });
-
-        if (!response.ok) {
-          console.error("DUI intake submission failed:", response.status);
-        } else {
-          const result = await response.json();
-          console.log("Successfully submitted DUI intake:", result.caseId);
-        }
-      } catch (webhookError) {
-        console.error("Webhook error:", webhookError);
-      }
-    } else {
-      console.log("GOOGLE_SCRIPT_WEBHOOK_URL not configured - skipping webhook");
-    }
+    // A DUI consultation request that doesn't reach the Dashboard is a lost
+    // client - fail loudly rather than confirming a request we didn't record.
+    const { clientId } = await submitToRivercrest(intakeData);
 
     return NextResponse.json({
       success: true,
       message: "DUI consultation request submitted",
-      caseId: `DUI-${Date.now()}`,
+      caseId: clientId || `DUI-${Date.now()}`,
     });
   } catch (error) {
     console.error("DUI intake submission error:", error);

@@ -126,6 +126,7 @@ async function submitToRivercrest(data: {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        secret: process.env.WEBHOOK_SHARED_SECRET || "",
         source: "PIERCE_DEFENSE_WEBSITE",
         // Core client info
         firstName: data.firstName || "",

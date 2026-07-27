@@ -17,6 +17,10 @@
 // Your citations folder ID
 const CITATIONS_FOLDER_ID = '1fhsJOvtZp6SWg8PeQmlFwNFKMd1KPL7q';
 
+// Shared secret - must match WEBHOOK_SHARED_SECRET in Vercel and the same
+// value used in the intake webhook. The /exec URL is public.
+const WEBHOOK_SHARED_SECRET = 'PASTE_THE_SAME_SECRET_HERE';
+
 /**
  * Handle POST requests from the website
  */
@@ -33,6 +37,12 @@ function doPost(e) {
       source,         // PIERCE_DEFENSE_WEBSITE or SEATTLE_DEFENSE_WEBSITE
       uploadedAt      // timestamp
     } = data;
+
+    if (data.secret !== WEBHOOK_SHARED_SECRET) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ error: 'Unauthorized' }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
 
     if (!imageData) {
       return ContentService

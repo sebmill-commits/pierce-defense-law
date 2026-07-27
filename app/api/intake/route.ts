@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { submitToRivercrest } from "@/lib/rivercrest";
 
 // Intake submission endpoint
 // Sends data to Rivercrest Case Management via Google Apps Script webhook
@@ -51,35 +52,15 @@ export async function POST(request: NextRequest) {
 
     console.log("New intake submission:", intakeData);
 
-    // Send to Rivercrest Google Apps Script webhook
-    const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_WEBHOOK_URL;
-
-    if (GOOGLE_SCRIPT_URL) {
-      try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(intakeData),
-        });
-
-        if (!response.ok) {
-          console.error("Google Sheets submission failed:", response.status);
-          // Don't fail the whole request - log and continue
-        } else {
-          console.log("Successfully submitted to Rivercrest");
-        }
-      } catch (webhookError) {
-        console.error("Webhook error:", webhookError);
-        // Don't fail the whole request - payment was successful
-      }
-    } else {
-      console.log("GOOGLE_SCRIPT_WEBHOOK_URL not configured - skipping webhook");
-    }
+    // Send to Rivercrest Google Apps Script webhook. A lead that doesn't reach
+    // the Dashboard is a lost client, so surface the failure instead of
+    // returning a confirmation the intake never earned.
+    const { clientId } = await submitToRivercrest(intakeData);
 
     return NextResponse.json({
       success: true,
       message: "Intake submitted successfully",
-      caseId: `PDL-${Date.now()}`,
+      caseId: clientId || `PDL-${Date.now()}`,
     });
   } catch (error) {
     console.error("Intake submission error:", error);

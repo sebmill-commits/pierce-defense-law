@@ -1,7 +1,7 @@
 /**
  * PIERCE DEFENSE WEBSITE WEBHOOK
  *
- * Handles traffic citation intakes from piercecountydefense.com
+ * Handles traffic citation intakes from piercedefense.com
  * Adds new cases to Dashboard with PDL- prefix (distinct from OTR- cases)
  */
 
@@ -9,9 +9,22 @@
  * Handles POST requests from Pierce Defense website
  * Traffic citations only - DUIs go to separate sheet
  */
+// Shared secret - must match WEBHOOK_SHARED_SECRET in Vercel.
+// This /exec URL is public, so without it anyone who finds the URL can append
+// rows to the case management sheet.
+const WEBHOOK_SHARED_SECRET = 'PASTE_THE_SAME_SECRET_HERE';
+
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
+
+    // Reject anything that isn't from our site
+    if (data.secret !== WEBHOOK_SHARED_SECRET) {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'Unauthorized'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
 
     // Only accept requests from our website
     if (data.source !== 'PIERCE_DEFENSE_WEBSITE') {
@@ -116,6 +129,7 @@ function testWebsiteIntake() {
   const mockEvent = {
     postData: {
       contents: JSON.stringify({
+        secret: WEBHOOK_SHARED_SECRET,
         source: 'PIERCE_DEFENSE_WEBSITE',
         firstName: 'Test',
         lastName: 'Website',

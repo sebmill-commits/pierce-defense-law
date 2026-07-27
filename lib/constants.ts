@@ -6,7 +6,7 @@ export const SITE_CONFIG = {
   tagline: "Straight talk. Fast action. Trial-tested defense.",
   phone: "(253) 238-7444",
   phoneRaw: "+12532387444",
-  email: "sebastian@piercecountydefense.com",
+  email: "sebastian@piercedefense.com",
   address: {
     street: "9009 S 19th St, BLDG F",
     city: "Tacoma",

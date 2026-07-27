@@ -189,7 +189,7 @@ export default function ContactPage() {
             "@context": "https://schema.org",
             "@type": "LegalService",
             name: SITE_CONFIG.name,
-            image: "https://piercecountydefense.com/images/sebastian-miller.jpg",
+            image: "https://piercedefense.com/images/sebastian-miller.jpg",
             telephone: SITE_CONFIG.phone,
             email: SITE_CONFIG.email,
             address: {

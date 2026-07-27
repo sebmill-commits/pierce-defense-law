@@ -21,7 +21,7 @@ export default function LocalArea() {
     name: SITE_CONFIG.name,
     description:
       "Trial attorney specializing in DUI and traffic ticket defense in Pierce County, Washington",
-    url: "https://piercecountydefense.com",
+    url: "https://piercedefense.com",
     telephone: SITE_CONFIG.phone,
     email: SITE_CONFIG.email,
     address: {

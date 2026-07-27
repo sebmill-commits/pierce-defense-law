@@ -269,7 +269,7 @@ export default function AboutPage() {
             "@type": "Attorney",
             name: SITE_CONFIG.attorneyName,
             jobTitle: SITE_CONFIG.attorneyTitle,
-            image: "https://piercecountydefense.com/images/sebastian-miller.jpg",
+            image: "https://piercedefense.com/images/sebastian-miller.jpg",
             telephone: SITE_CONFIG.phone,
             email: SITE_CONFIG.email,
             worksFor: {
