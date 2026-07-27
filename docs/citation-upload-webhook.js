@@ -1,4 +1,8 @@
 /**
+ * SUPERSEDED - use docs/pierce-website-webhook.gs instead, which combines this
+ * and the intake webhook into a single doPost / single deployment.
+ * Kept for reference only.
+ *
  * Google Apps Script - Citation Upload Webhook
  *
  * Deploy this as a Web App to receive citation images from the Pierce Defense website

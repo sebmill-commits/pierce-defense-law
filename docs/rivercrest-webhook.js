@@ -1,4 +1,8 @@
 /**
+ * SUPERSEDED - use docs/pierce-website-webhook.gs instead, which combines this
+ * and the citation upload into a single doPost / single deployment.
+ * Kept for reference only.
+ *
  * PIERCE DEFENSE WEBSITE WEBHOOK
  *
  * Handles traffic citation intakes from piercedefense.com
