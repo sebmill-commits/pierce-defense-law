@@ -49,6 +49,10 @@ export async function POST(request: NextRequest) {
       ],
       mode: "payment",
       customer_email: contact.email,
+      // Stripe emails its own payment receipt to this address on success
+      payment_intent_data: {
+        receipt_email: contact.email,
+      },
       metadata: {
         source: source || "PIERCE_DEFENSE_WEBSITE",
         firstName: contact.firstName,

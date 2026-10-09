@@ -7,7 +7,7 @@ export const SEATTLE_SITE_CONFIG = {
   tagline: "Straight talk. Fast action. Trial-tested defense.",
   phone: "(206) 414-1964",
   phoneRaw: "+12064141964",
-  email: "defense@rivercrestlaw.com",
+  email: "sebastian@rivercrestlaw.com",
   address: {
     street: "1928 43rd Ave E #9",
     city: "Seattle",

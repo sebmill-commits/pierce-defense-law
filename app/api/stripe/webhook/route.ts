@@ -5,6 +5,29 @@ function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!);
 }
 
+// Per-site branding for client-facing email. The from-address domain must be
+// verified in Resend regardless of which site the intake came from.
+const BRANDS = {
+  SEATTLE_DEFENSE_WEBSITE: {
+    name: "Rivercrest Law",
+    email: "sebastian@rivercrestlaw.com",
+    phone: "(206) 414-1964",
+    baseUrl: process.env.SEATTLE_BASE_URL || "https://defense.rivercrestlaw.com",
+  },
+  PIERCE_DEFENSE_WEBSITE: {
+    name: "Pierce Defense Law",
+    email: "sebastian@piercedefense.com",
+    phone: "(253) 238-7444",
+    baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://piercedefense.com",
+  },
+} as const;
+
+function brandForSource(source?: string) {
+  return source === "SEATTLE_DEFENSE_WEBSITE"
+    ? BRANDS.SEATTLE_DEFENSE_WEBSITE
+    : BRANDS.PIERCE_DEFENSE_WEBSITE;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.text();
@@ -40,6 +63,7 @@ export async function POST(request: NextRequest) {
 
         // Extract metadata
         const {
+          source,
           firstName,
           lastName,
           phone,
@@ -50,10 +74,15 @@ export async function POST(request: NextRequest) {
           hearingDate,
         } = session.metadata || {};
 
-        // Send data to Rivercrest via Google Apps Script webhook
-        await submitToRivercrest({
+        const email =
+          session.customer_email || session.customer_details?.email || null;
+
+        // Send data to Rivercrest via Google Apps Script webhook.
+        // Returns the assigned PDL case number when the sheet accepts the row.
+        const caseNumber = await submitToRivercrest({
+          source,
           paymentId: session.id,
-          email: session.customer_email,
+          email,
           firstName,
           lastName,
           phone,
@@ -66,17 +95,23 @@ export async function POST(request: NextRequest) {
           paidAt: new Date().toISOString(),
         });
 
-        // Send retainer agreement email
-        await sendRetainerEmail({
-          email: session.customer_email!,
-          firstName: firstName || "",
-          lastName: lastName || "",
-          courtName: courtName || "",
-          citationNumber: citationNumber || "",
-          violationType: violationType || "",
-          amount: session.amount_total ? session.amount_total / 100 : 0,
-          paymentId: session.id,
-        });
+        // Send welcome email with receipt details + representation agreement
+        if (email) {
+          await sendRetainerEmail({
+            source,
+            email,
+            firstName: firstName || "",
+            lastName: lastName || "",
+            courtName: courtName || "",
+            citationNumber: citationNumber || "",
+            violationType: violationType || "",
+            caseNumber,
+            amount: session.amount_total ? session.amount_total / 100 : 0,
+            paymentId: session.id,
+          });
+        } else {
+          console.error("No client email on session", session.id);
+        }
 
         break;
 
@@ -99,8 +134,10 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Send intake data to Rivercrest Case Management
+// Send intake data to Rivercrest Case Management.
+// Returns the PDL- case number assigned by the sheet, or null.
 async function submitToRivercrest(data: {
+  source?: string;
   paymentId: string;
   email: string | null;
   firstName?: string;
@@ -113,12 +150,12 @@ async function submitToRivercrest(data: {
   hearingDate?: string;
   amount: number;
   paidAt: string;
-}) {
+}): Promise<string | null> {
   const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_WEBHOOK_URL;
 
   if (!GOOGLE_SCRIPT_URL) {
     console.log("GOOGLE_SCRIPT_WEBHOOK_URL not configured - skipping");
-    return;
+    return null;
   }
 
   try {
@@ -127,7 +164,8 @@ async function submitToRivercrest(data: {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         secret: process.env.WEBHOOK_SHARED_SECRET || "",
-        source: "PIERCE_DEFENSE_WEBSITE",
+        // Seattle signups were being tagged as Pierce; pass the real source
+        source: data.source || "PIERCE_DEFENSE_WEBSITE",
         // Core client info
         firstName: data.firstName || "",
         lastName: data.lastName || "",
@@ -152,51 +190,74 @@ async function submitToRivercrest(data: {
 
     if (!response.ok) {
       console.error("Rivercrest submission failed:", response.status);
-    } else {
-      console.log("Successfully submitted to Rivercrest");
+      return null;
     }
+
+    const result = await response.json().catch(() => null);
+    console.log("Successfully submitted to Rivercrest:", result?.clientId);
+    return result?.clientId || null;
   } catch (error) {
     console.error("Rivercrest webhook error:", error);
+    return null;
   }
 }
 
-// Send retainer agreement email via Resend
+// Send welcome/receipt email with representation agreement via Resend
 async function sendRetainerEmail(data: {
+  source?: string;
   email: string;
   firstName: string;
   lastName: string;
   courtName: string;
   citationNumber: string;
   violationType: string;
+  caseNumber: string | null;
   amount: number;
   paymentId: string;
 }) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
   if (!RESEND_API_KEY) {
-    console.log("RESEND_API_KEY not configured - skipping email");
+    console.error(
+      "RESEND_API_KEY not configured - client welcome email NOT sent for",
+      data.paymentId
+    );
     return;
   }
 
-  const clientName = `${data.firstName} ${data.lastName}`;
+  const brand = brandForSource(data.source);
+  const fromAddress = process.env.RESEND_FROM || "noreply@piercedefense.com";
+  const clientName = `${data.firstName} ${data.lastName}`.trim();
+  // The reference the client should put in email subject lines: prefer the
+  // case number assigned by the case management system, else the citation #.
+  const caseRef = data.caseNumber || data.citationNumber || "";
   const today = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "America/Los_Angeles",
   });
 
   try {
-    await fetch("https://api.resend.com/emails", {
+    const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Pierce Defense Law <noreply@piercedefenselaw.com>",
+        from: `${brand.name} <${fromAddress}>`,
         to: data.email,
+        cc: "sebastian@piercedefense.com",
         bcc: "support@rivercrestlaw.info",
-        subject: `Retainer Agreement - ${data.courtName || "Traffic Infraction"} Defense`,
+        reply_to: brand.email,
+        subject: `Payment received — your traffic infraction case${caseRef ? ` (${caseRef})` : ""}`,
+        attachments: [
+          {
+            path: `${brand.baseUrl}/documents/representation-agreement.pdf`,
+            filename: "Representation_Agreement.pdf",
+          },
+        ],
         html: `
 <!DOCTYPE html>
 <html>
@@ -216,52 +277,58 @@ async function sendRetainerEmail(data: {
     .signature { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
     .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #1e3a5f; font-size: 12px; color: #666; text-align: center; }
     .highlight { background: #e8f4e8; padding: 15px; border-left: 4px solid #2d6a2d; margin: 20px 0; }
+    .action { background: #fff8e1; padding: 15px; border-left: 4px solid #b8860b; margin: 20px 0; }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>PIERCE DEFENSE LAW</h1>
-    <p>Sebastian Miller, Attorney at Law | WSBA #50261</p>
+    <h1>${brand.name.toUpperCase()}</h1>
+    <p>Rivercrest Law PLLC | Sebastian Miller, Attorney at Law | WSBA #50261</p>
   </div>
 
   <p><strong>Date:</strong> ${today}</p>
   <p><strong>To:</strong> ${clientName}</p>
-  <p><strong>Re:</strong> Legal Representation Agreement</p>
+  <p><strong>Re:</strong> Payment Receipt &amp; Legal Representation</p>
 
   <div class="section">
-    <div class="section-title">CASE INFORMATION</div>
+    <div class="section-title">RECEIPT &amp; CASE INFORMATION</div>
     <div class="case-info">
       <p><strong>Client:</strong> ${clientName}</p>
+      ${caseRef ? `<p><strong>Your Case Number:</strong> ${caseRef}</p>` : ""}
       <p><strong>Court:</strong> ${data.courtName || "To Be Determined"}</p>
       ${data.citationNumber ? `<p><strong>Citation #:</strong> ${data.citationNumber}</p>` : ""}
-      ${data.violationType ? `<p><strong>Charge:</strong> ${data.violationType}</p>` : ""}
+      ${data.violationType ? `<p><strong>Alleged Violation:</strong> ${data.violationType}</p>` : ""}
       <p><strong>Fee Paid:</strong> $${data.amount.toFixed(2)}</p>
-      <p><strong>Confirmation #:</strong> ${data.paymentId}</p>
+      <p><strong>Payment Confirmation #:</strong> ${data.paymentId}</p>
     </div>
   </div>
 
   <div class="highlight">
-    <strong>Thank you for retaining Pierce Defense Law.</strong> Your payment has been received and I am now your attorney of record for this matter. I will handle all court appearances and communications with the prosecutor on your behalf.
+    <strong>Thank you for retaining ${brand.name}.</strong> Your payment has been received. This email is your receipt. The attached Representation Agreement sets out the terms of the engagement — please save both for your records.
   </div>
 
   <div class="section terms">
-    <div class="section-title">SCOPE OF REPRESENTATION</div>
+    <div class="section-title">SCOPE &amp; KEY TERMS (summary — see attached agreement)</div>
     <ol>
-      <li><strong>Services Included:</strong> Attorney will represent Client in the above-referenced traffic infraction matter, including case review, discovery requests, negotiations with the prosecutor, and all court appearances through final disposition.</li>
-      <li><strong>Flat Fee:</strong> The fee paid covers all attorney services for this matter. No additional fees will be charged unless the case involves circumstances not disclosed at intake or requires appeal.</li>
-      <li><strong>Court Costs:</strong> Client remains responsible for any court-imposed fines, fees, or penalties if the case does not result in dismissal.</li>
-      <li><strong>Communication:</strong> Attorney will provide updates via email. Client agrees to respond promptly to requests for information.</li>
-      <li><strong>No Guarantee:</strong> Attorney will provide competent representation but cannot guarantee any particular outcome.</li>
+      <li><strong>Traffic Infractions Only:</strong> This representation covers your civil traffic infraction matter only. It does not include criminal matters of any kind, including criminal traffic offenses (such as DUI, reckless driving, or driving while license suspended). If your citation involves a criminal charge, contact us before relying on this engagement.</li>
+      <li><strong>Tickets Submitted Past the Response Deadline:</strong> If your ticket was submitted to us after the court's response deadline had already passed, the firm will either (a) decline the case and refund your payment, or (b) offer to proceed for an additional fee to address the late response. We will contact you before any additional fee is charged.</li>
+      <li><strong>Services Included:</strong> Case review, discovery requests, negotiations with the prosecutor, and court appearances through final disposition of the infraction.</li>
+      <li><strong>Flat Fee:</strong> The fee paid covers attorney services for this matter. Court-imposed fines, fees, or penalties remain your responsibility if the case is not dismissed.</li>
+      <li><strong>No Guarantee:</strong> The firm will provide competent representation but cannot guarantee any particular outcome.</li>
     </ol>
+  </div>
+
+  <div class="action">
+    <strong>If you receive new insurance or vehicle registration information</strong> (for example, proof of insurance for an insurance-related citation, or updated registration), email it to <a href="mailto:${brand.email}">${brand.email}</a> and put <strong>your case number${caseRef ? ` (${caseRef})` : ""}</strong> in the subject line. This helps us match your documents to your case immediately.
   </div>
 
   <div class="section">
     <div class="section-title">NEXT STEPS</div>
     <ol>
-      <li>I will file a Notice of Appearance with the court within 2-3 business days</li>
+      <li>I will file a Notice of Appearance with the court</li>
       <li>I will request discovery (evidence) from the prosecutor</li>
       <li>You will receive an email when your hearing date is confirmed</li>
-      <li>You do NOT need to appear in court - I will appear on your behalf</li>
+      <li>You do NOT need to appear in court — I will appear on your behalf</li>
     </ol>
   </div>
 
@@ -269,23 +336,36 @@ async function sendRetainerEmail(data: {
     <p>By making payment, you acknowledge receipt of this agreement and consent to representation under these terms.</p>
     <p style="margin-top: 20px;">
       <strong>Sebastian Miller</strong><br>
-      Pierce Defense Law<br>
+      ${brand.name} (Rivercrest Law PLLC)<br>
       WSBA #50261<br>
-      (253) 238-7444<br>
-      support@rivercrestlaw.info
+      ${brand.phone}<br>
+      ${brand.email}
     </p>
   </div>
 
   <div class="footer">
-    <p>Pierce Defense Law | Tacoma, WA</p>
-    <p>This email serves as your receipt and retainer agreement. Please save it for your records.</p>
+    <p>${brand.name} | Washington State</p>
+    <p>This email serves as your receipt. The attached Representation Agreement governs the engagement. Please save both for your records.</p>
   </div>
 </body>
 </html>
         `,
       }),
     });
-    console.log("Retainer email sent to:", data.email);
+
+    if (!response.ok) {
+      const errBody = await response.text();
+      console.error(
+        "Resend send failed:",
+        response.status,
+        errBody,
+        "payment:",
+        data.paymentId
+      );
+      return;
+    }
+
+    console.log("Welcome email sent to:", data.email, "cc: sebastian@piercedefense.com");
   } catch (error) {
     console.error("Email send error:", error);
   }

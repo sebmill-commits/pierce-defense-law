@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowLeft, CreditCard, Lock, Shield, Loader2 } from "lucide-react";
 import type { IntakeState } from "@/app/defense/fight-my-ticket/page";
 import { SEATTLE_SITE_CONFIG } from "@/lib/seattle-constants";
+import { toBase64Payload } from "@/lib/intake-image";
 
 interface PaymentStepProps {
   state: IntakeState;
@@ -43,11 +44,15 @@ export default function SeattlePaymentStep({
     setStatusMessage(null);
 
     try {
-      // Step 1: Upload citation image to Google Drive (if available)
-      if (state.citation.imageFile) {
+      // Step 1: Upload citation image to Google Drive (if available).
+      // Prefer the compressed copy (fits size limits, survives reloads);
+      // fall back to converting the original file.
+      if (state.citation.imageData || state.citation.imageFile) {
         setStatusMessage("Uploading citation...");
         try {
-          const imageData = await fileToBase64(state.citation.imageFile);
+          const imageData = state.citation.imageData
+            ? toBase64Payload(state.citation.imageData)
+            : await fileToBase64(state.citation.imageFile!);
           const clientName = `${state.contact.firstName} ${state.contact.lastName}`;
           const fileName = `${clientName.replace(/\s+/g, "_")}_${state.citation.courtName?.replace(/\s+/g, "_") || "citation"}_${Date.now()}.jpg`;
 

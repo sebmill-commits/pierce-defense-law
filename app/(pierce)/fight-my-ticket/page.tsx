@@ -15,6 +15,10 @@ export type IntakeStep = "upload" | "review" | "contact" | "payment" | "confirma
 export interface CitationData {
   imageUrl: string | null;
   imageFile: File | null;
+  // Compressed data-URL copy of the citation photo; survives localStorage
+  // round-trips (the File object cannot) so the upload still happens even
+  // after a page reload or the Stripe redirect
+  imageData: string | null;
   citationNumber: string;
   courtName: string;
   violationType: string;
@@ -43,6 +47,7 @@ const initialState: IntakeState = {
   citation: {
     imageUrl: null,
     imageFile: null,
+    imageData: null,
     citationNumber: "",
     courtName: "",
     violationType: "",
@@ -163,7 +168,17 @@ function FightMyTicketContent() {
         ...state,
         citation: { ...state.citation, imageFile: null, imageUrl: null },
       };
-      localStorage.setItem("intakeState", JSON.stringify(toSave));
+      try {
+        localStorage.setItem("intakeState", JSON.stringify(toSave));
+      } catch {
+        // Quota exceeded (large photo) - save without the image copy
+        toSave.citation = { ...toSave.citation, imageData: null };
+        try {
+          localStorage.setItem("intakeState", JSON.stringify(toSave));
+        } catch {
+          // Ignore - state just won't survive a reload
+        }
+      }
     }
   }, [state]);
 

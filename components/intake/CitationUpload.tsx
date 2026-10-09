@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { Camera, Upload, X, Loader2 } from "lucide-react";
 import Image from "next/image";
 import type { CitationData } from "@/app/(pierce)/fight-my-ticket/page";
+import { compressCitationImage } from "@/lib/intake-image";
 
 interface CitationUploadProps {
   citation: CitationData;
@@ -44,16 +45,22 @@ export default function CitationUpload({
     // Create preview URL
     const imageUrl = URL.createObjectURL(file);
 
+    // Compress up front so the upload fits request-size limits and the photo
+    // survives a page reload via localStorage
+    let imageData: string | null = null;
+    try {
+      imageData = await compressCitationImage(file);
+    } catch {
+      // Fall back to uploading the original file at payment time
+    }
+
     updateCitation({
       imageUrl,
       imageFile: file,
+      imageData,
     });
 
-    // Simulate OCR processing (in production, this would call the OCR API)
-    // For now, we'll just show the image and let the user fill in details
-    setTimeout(() => {
-      setIsProcessing(false);
-    }, 1000);
+    setIsProcessing(false);
   };
 
   const clearImage = () => {
@@ -63,6 +70,7 @@ export default function CitationUpload({
     updateCitation({
       imageUrl: null,
       imageFile: null,
+      imageData: null,
     });
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
